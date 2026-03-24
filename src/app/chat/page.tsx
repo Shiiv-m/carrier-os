@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { Send, Search, Phone, Video, MoreVertical, Image as ImageIcon, Paperclip, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+
+const makeSlug = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
 const CONTACTS = [
   { id: "1", name: "Sarah Chen", role: "Product Designer @ Google", avatar: "S", online: true, lastMessage: "That sounds great, let's connect tomorrow!", time: "10:42 AM", unread: 2 },
@@ -90,11 +93,17 @@ export default function ChatPage() {
             {/* Chat Header */}
             <div className="h-16 px-6 border-b border-border flex justify-between items-center bg-card">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-600 flex items-center justify-center text-white font-bold">
-                  {activeContact.avatar}
-                </div>
+                <Link href={`/u/${makeSlug(activeContact.name)}`}>
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-600 flex items-center justify-center text-white font-bold hover:opacity-80 transition-opacity cursor-pointer">
+                    {activeContact.avatar}
+                  </div>
+                </Link>
                 <div>
-                  <h3 className="font-semibold">{activeContact.name}</h3>
+                  <h3 className="font-semibold cursor-pointer hover:underline">
+                    <Link href={`/u/${makeSlug(activeContact.name)}`}>
+                      {activeContact.name}
+                    </Link>
+                  </h3>
                   <p className="text-xs text-muted flex items-center gap-1">
                     {activeContact.online ? <span className="text-green-500">● Online</span> : 'Offline'}
                   </p>
