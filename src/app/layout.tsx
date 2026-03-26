@@ -23,6 +23,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceGrotesk.variable} h-full antialiased font-space`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex bg-background relative">
         <Sidebar />

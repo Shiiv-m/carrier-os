@@ -19,6 +19,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import BackgroundAnimation from "@/components/layout/BackgroundAnimation";
 import Link from "next/link";
+import LockedFeature from "@/components/ui/LockedFeature";
 
 const makeSlug = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
@@ -115,259 +116,235 @@ export default function CommunityPage() {
   const myBadgeStyle = getRankBadgeAndStyle(myRank - 1, myTotalUsers);
 
   return (
-    <div className="flex-1 relative overflow-x-hidden overflow-y-auto bg-background p-6 lg:p-10 flex flex-col xl:flex-row gap-8">
+    <div className="flex-1 relative overflow-x-hidden overflow-y-auto bg-background p-6 lg:p-10">
       <BackgroundAnimation variant="community" />
       
-      {/* Main Feed Column */}
-      <div className="flex-1 max-w-4xl space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">
-            Peer Review <ShieldCheck className="w-8 h-8 text-indigo-500" />
-          </h1>
-          <p className="text-muted mt-2 text-lg">
-            Anonymously review resumes, earn Karma, and climb the ranks.
-          </p>
-        </div>
+      <LockedFeature 
+        featureName="Community Hub" 
+        description={[
+          "Anonymously review resumes from community members.",
+          "Earn Karma points for every helpful feedback provided.",
+          "Build your reputation as a top-tier industry professional.",
+          "Unlock exclusive community badges and rewards."
+        ]}
+      >
+        <div className="flex flex-col xl:flex-row gap-8">
+          {/* Main Feed Column */}
+          <div className="flex-1 max-w-4xl space-y-8">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">
+                Peer Review <ShieldCheck className="w-8 h-8 text-indigo-500" />
+              </h1>
+              <p className="text-muted mt-2 text-lg">
+                Anonymously review resumes, earn Karma, and climb the ranks.
+              </p>
+            </div>
 
-        {/* Action Bar */}
-        <div className="flex items-center justify-between bg-card border border-border rounded-xl p-4 shadow-sm">
-          <div className="flex space-x-2">
-            <button 
-              onClick={() => setActiveTab("feed")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === 'feed' ? 'bg-primary/20 text-primary' : 'text-muted hover:text-foreground hover:bg-white/5'}`}
-            >
-              Latest Requests
-            </button>
-            <button 
-              onClick={() => setActiveTab("hired")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${activeTab === 'hired' ? 'bg-green-500/20 text-green-500' : 'text-muted hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Crown className="w-4 h-4" /> Success Stories
-            </button>
-          </div>
-          <button className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-xl font-bold transition-all shadow-md hover:shadow-[0_0_15px_rgba(124,58,237,0.4)]">
-            Request Review
-          </button>
-        </div>
-
-        {/* Feed Items */}
-        <div className="space-y-6 pb-12">
-          {FEED_ITEMS.map((item) => (
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              key={item.id} 
-              className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group cursor-pointer"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-600 flex items-center justify-center text-white font-bold shadow-inner">
-                    {item.isAnonymized ? <User className="w-6 h-6 opacity-50" /> : item.author?.charAt(0)}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground text-lg flex items-center gap-2">
-                      {item.role} 
-                      <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700">
-                        {item.industry}
-                      </span>
-                    </h3>
-                    <p className="text-sm text-muted flex items-center gap-1.5">
-                      {item.isAnonymized ? (
-                        "Anonymous User"
-                      ) : (
-                        <Link href={`/u/${makeSlug(item.author!)}`} className="hover:underline text-foreground font-medium">{item.author}</Link>
-                      )}
-                      <span className="text-muted font-normal">• {item.timeAgo}</span>
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-2 bg-orange-500/10 text-orange-400 px-3 py-1.5 rounded-lg border border-orange-500/20 font-bold">
-                  <Flame className="w-4 h-4" /> +{item.pointsBounty} Karma
-                </div>
-              </div>
-
-              <div className="relative pl-4 border-l-2 border-primary/30 py-2 my-4">
-                <p className="text-zinc-300 text-lg italic leading-relaxed">
-                  "{item.snippet}"
-                </p>
-                <div className="absolute top-0 left-0 w-8 h-8 bg-primary/10 -translate-x-[17px] -translate-y-[10px] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Search className="w-4 h-4 text-primary" />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-4 border-t border-border/50 text-sm">
-                <div className="flex gap-4">
-                  <button className="flex items-center gap-1.5 text-muted hover:text-primary transition-colors">
-                    <MessageSquare className="w-4 h-4" /> {item.comments} Feedback
-                  </button>
-                  <button className="flex items-center gap-1.5 text-muted hover:text-green-500 transition-colors">
-                    <ThumbsUp className="w-4 h-4" /> Helpful
-                  </button>
-                </div>
-                <button className="text-primary font-medium hover:underline flex items-center gap-1">
-                  Review & Earn <ChevronRight className="w-4 h-4" />
+            {/* Action Bar */}
+            <div className="flex items-center justify-between bg-card border border-border rounded-xl p-4 shadow-sm">
+              <div className="flex space-x-2">
+                <button 
+                  onClick={() => setActiveTab("feed")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === 'feed' ? 'bg-primary/20 text-primary' : 'text-muted hover:text-foreground hover:bg-white/5'}`}
+                >
+                  Latest Requests
+                </button>
+                <button 
+                  onClick={() => setActiveTab("hired")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${activeTab === 'hired' ? 'bg-green-500/20 text-green-500' : 'text-muted hover:text-foreground hover:bg-white/5'}`}
+                >
+                  <Crown className="w-4 h-4" /> Success Stories
                 </button>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+              <button className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-xl font-bold transition-all shadow-md hover:shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+                Request Review
+              </button>
+            </div>
 
-      {/* Right Sidebar: Leaderboard & Stats */}
-      <div className="w-full xl:w-96 shrink-0 space-y-6">
-        
-        {/* User Stats Card */}
-        <div className="relative bg-gradient-to-b from-indigo-500/10 to-card border border-indigo-500/30 rounded-2xl p-6 shadow-lg shadow-indigo-500/10 overflow-hidden">
-          {/* Subtle background glow for current user */}
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/20 blur-3xl rounded-full pointer-events-none" />
-          
-          <div className="flex items-center gap-4 mb-5 relative z-10">
-            <div className={`w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xl font-bold shadow-lg ring-2 ring-indigo-400 ring-offset-2 ring-offset-background`}>
-              S
-            </div>
-            <div>
-              <h4 className="font-bold text-white text-lg mb-0.5 cursor-pointer hover:underline"><Link href={`/u/shivam-sharma`}>Shivam Sharma</Link></h4>
-              <div className="flex items-center gap-2 mt-1">
-                <span className={`text-[10px] bg-background border border-border px-1.5 py-0.5 rounded-md text-muted font-medium font-mono`}>
-                  Rank #{myRank}
-                </span>
-                <span className={`flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded border ${myBadgeStyle.bg} ${myBadgeStyle.color} uppercase tracking-wider`}>
-                  <myBadgeStyle.icon className="w-3 h-3" /> {myBadgeStyle.name}
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3 mb-5 relative z-10">
-            <div className="bg-background rounded-xl p-3 border border-border hover:border-indigo-500/30 transition-colors cursor-default group">
-              <p className="text-xs text-muted mb-1 group-hover:text-indigo-400 transition-colors">Karma Points</p>
-              <p className="text-2xl font-black text-foreground flex items-center gap-1.5">
-                 <Flame className="w-5 h-5 text-orange-500" /> {myKarma}
-              </p>
-            </div>
-            <div className="bg-background rounded-xl p-3 border border-border hover:border-green-500/30 transition-colors cursor-default group">
-              <p className="text-xs text-muted mb-1 group-hover:text-green-500 transition-colors">Hires Helped</p>
-              <p className="text-2xl font-black text-foreground flex items-center gap-1.5">
-                <Medal className="w-5 h-5 text-green-500" /> 0
-              </p>
-            </div>
-          </div>
-          
-          <div className="relative z-10">
-            <button className="w-full bg-[#0A66C2] hover:bg-[#084e96] text-white px-4 py-2.5 rounded-xl font-medium transition-colors flex items-center justify-center gap-2 text-sm shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-              Verify w/ LinkedIn to get "Verified Professional"
-            </button>
-          </div>
-        </div>
-
-        {/* Global Leaderboard */}
-        <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-lg flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" /> Leaderboard
-            </h3>
-            <span className="text-xs text-muted cursor-pointer hover:underline font-medium">View All</span>
-          </div>
-
-          <div className="space-y-3">
-            {LEADERBOARD.map((user, index) => {
-              const style = getRankBadgeAndStyle(index, 1250); // MOCK 1250 total users
-              const isRank1 = index === 0;
-              
-              return (
-                <div 
-                  key={user.id} 
-                  className={`flex gap-3 items-center p-3 rounded-xl transition-all block w-full ${style.highlightClass}`}
+            {/* Feed Items */}
+            <div className="space-y-6 pb-12">
+              {FEED_ITEMS.map((item) => (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  key={item.id} 
+                  className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group cursor-pointer"
                 >
-                  <div className={`w-8 flex shrink-0 justify-center ${style.numColor}`}>
-                    #{index + 1}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1">
-                      <div className="flex items-center gap-1.5 truncate pr-2">
-                        <h4 className={`font-semibold text-sm truncate cursor-pointer hover:underline ${isRank1 ? 'text-yellow-500' : 'text-foreground'}`}>
-                          <Link href={`/u/${makeSlug(user.name)}`}>{user.name}</Link>
-                        </h4>
-                        {user.isVerified && (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                        )}
-                        <span className={`shrink-0 flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded border ${style.bg} ${style.color} uppercase`}>
-                          <style.icon className="w-2.5 h-2.5" /> {style.name}
-                        </span>
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-600 flex items-center justify-center text-white font-bold shadow-inner">
+                        {item.isAnonymized ? <User className="w-6 h-6 opacity-50" /> : item.author?.charAt(0)}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground text-lg flex items-center gap-2">
+                          {item.role} 
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700">
+                            {item.industry}
+                          </span>
+                        </h3>
+                        <p className="text-sm text-muted flex items-center gap-1.5">
+                          {item.isAnonymized ? (
+                            "Anonymous User"
+                          ) : (
+                            <Link href={`/u/${makeSlug(item.author!)}`} className="hover:underline text-foreground font-medium">{item.author}</Link>
+                          )}
+                          <span className="text-muted font-normal">• {item.timeAgo}</span>
+                        </p>
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-3">
-                      <span className="text-[11px] text-muted font-medium flex items-center gap-1">
-                        <Flame className="w-3 h-3 text-orange-500" /> {user.karmaPoints.toLocaleString()} K
-                      </span>
-                      <span className="text-[11px] text-muted font-medium flex items-center gap-1">
-                        <Medal className="w-3 h-3 text-green-500" /> {user.successfulHires} Hires
-                      </span>
+                    <div className="flex items-center gap-2 bg-orange-500/10 text-orange-400 px-3 py-1.5 rounded-lg border border-orange-500/20 font-bold">
+                      <Flame className="w-4 h-4" /> +{item.pointsBounty} Karma
                     </div>
                   </div>
-                  
-                  {isRank1 && (
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-500 to-orange-500 flex items-center justify-center shrink-0 ring-2 ring-yellow-500 ring-offset-2 ring-offset-card shadow-[0_0_10px_rgba(234,179,8,0.5)]">
-                      <Crown className="w-5 h-5 text-white" />
+
+                  <div className="relative pl-4 border-l-2 border-primary/30 py-2 my-4">
+                    <p className="text-zinc-300 text-lg italic leading-relaxed">
+                      "{item.snippet}"
+                    </p>
+                    <div className="absolute top-0 left-0 w-8 h-8 bg-primary/10 -translate-x-[17px] -translate-y-[10px] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Search className="w-4 h-4 text-primary" />
                     </div>
-                  )}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-border/50 text-sm">
+                    <div className="flex gap-4">
+                      <button className="flex items-center gap-1.5 text-muted hover:text-primary transition-colors">
+                        <MessageSquare className="w-4 h-4" /> {item.comments} Feedback
+                      </button>
+                      <button className="flex items-center gap-1.5 text-muted hover:text-green-500 transition-colors">
+                        <ThumbsUp className="w-4 h-4" /> Helpful
+                      </button>
+                    </div>
+                    <button className="text-primary font-medium hover:underline flex items-center gap-1">
+                      Review & Earn <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Sidebar: Leaderboard & Stats */}
+          <div className="w-full xl:w-96 shrink-0 space-y-6">
+            {/* User Stats Card */}
+            <div className="relative bg-gradient-to-b from-indigo-500/10 to-card border border-indigo-500/30 rounded-2xl p-6 shadow-lg shadow-indigo-500/10 overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/20 blur-3xl rounded-full pointer-events-none" />
+              
+              <div className="flex items-center gap-4 mb-5 relative z-10">
+                <div className={`w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xl font-bold shadow-lg ring-2 ring-indigo-400 ring-offset-2 ring-offset-background`}>
+                  S
                 </div>
-              );
-            })}
+                <div>
+                  <h4 className="font-bold text-white text-lg mb-0.5 cursor-pointer hover:underline text-foreground"><Link href={`/u/shivam-sharma`}>Shivam Sharma</Link></h4>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`text-[10px] bg-background border border-border px-1.5 py-0.5 rounded-md text-muted font-medium font-mono`}>
+                      Rank #{myRank}
+                    </span>
+                    <span className={`flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded border ${myBadgeStyle.bg} ${myBadgeStyle.color} uppercase tracking-wider`}>
+                      <myBadgeStyle.icon className="w-3 h-3" /> {myBadgeStyle.name}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3 mb-5 relative z-10">
+                <div className="bg-background rounded-xl p-3 border border-border hover:border-indigo-500/30 transition-colors cursor-default group">
+                  <p className="text-xs text-muted mb-1 group-hover:text-indigo-400 transition-colors">Karma Points</p>
+                  <p className="text-2xl font-black text-foreground flex items-center gap-1.5">
+                     <Flame className="w-5 h-5 text-orange-500" /> {myKarma}
+                  </p>
+                </div>
+                <div className="bg-background rounded-xl p-3 border border-border hover:border-green-500/30 transition-colors cursor-default group">
+                  <p className="text-xs text-muted mb-1 group-hover:text-green-500 transition-colors">Hires Helped</p>
+                  <p className="text-2xl font-black text-foreground flex items-center gap-1.5">
+                    <Medal className="w-5 h-5 text-green-500" /> 0
+                  </p>
+                </div>
+              </div>
+              
+              <div className="relative z-10">
+                <button className="w-full bg-[#0A66C2] hover:bg-[#084e96] text-white px-4 py-2.5 rounded-xl font-medium transition-colors flex items-center justify-center gap-2 text-sm shadow-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  Verify w/ LinkedIn
+                </button>
+              </div>
+            </div>
+
+            {/* Global Leaderboard */}
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-bold text-lg flex items-center gap-2 text-foreground">
+                  <Trophy className="w-5 h-5 text-yellow-500" /> Leaderboard
+                </h3>
+              </div>
+
+              <div className="space-y-3">
+                {LEADERBOARD.slice(0, 5).map((user, index) => {
+                  const style = getRankBadgeAndStyle(index, 1250);
+                  const isRank1 = index === 0;
+                  
+                  return (
+                    <div 
+                      key={user.id} 
+                      className={`flex gap-3 items-center p-3 rounded-xl transition-all block w-full ${style.highlightClass}`}
+                    >
+                      <div className={`w-8 flex shrink-0 justify-center ${style.numColor}`}>
+                        #{index + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <h4 className={`font-semibold text-sm truncate text-foreground`}>
+                            {user.name}
+                          </h4>
+                        </div>
+                        <div className="flex items-center gap-2">
+                           <span className="text-[10px] text-muted">{user.karmaPoints.toLocaleString()} K</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Badge System Explainer */}
+            <div className="bg-background border border-border rounded-2xl p-1 overflow-hidden">
+              <button 
+                onClick={() => setShowBadgeExplainer(!showBadgeExplainer)}
+                className="w-full flex items-center justify-between p-4 hover:bg-card transition-colors rounded-xl"
+              >
+                <span className="font-semibold text-sm flex items-center gap-2 text-foreground">
+                  <Info className="w-4 h-4 text-purple-400" /> Badge System
+                </span>
+                <ChevronRight className={`w-4 h-4 text-muted transition-transform ${showBadgeExplainer ? 'rotate-90' : ''}`} />
+              </button>
+              
+              <AnimatePresence>
+                {showBadgeExplainer && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="px-4 pb-4 overflow-hidden"
+                  >
+                    <div className="space-y-3 pt-2 border-t border-border/50 mt-2">
+                      {BADGE_TIERS.slice(0, 3).map(tier => (
+                        <div key={tier.name} className="flex gap-3 items-start bg-card p-3 rounded-xl border border-border/50">
+                           <tier.icon className={`w-4 h-4 shrink-0 ${tier.color}`} />
+                           <p className="text-xs text-muted leading-tight">{tier.name}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
-
-        {/* Badge System Explainer */}
-        <div className="bg-background border border-border rounded-2xl p-1 overflow-hidden">
-          <button 
-            onClick={() => setShowBadgeExplainer(!showBadgeExplainer)}
-            className="w-full flex items-center justify-between p-4 hover:bg-card transition-colors rounded-xl"
-          >
-            <span className="font-semibold text-sm flex items-center gap-2">
-              <Info className="w-4 h-4 text-purple-400" /> How Badges Work
-            </span>
-            <ChevronRight className={`w-4 h-4 text-muted transition-transform ${showBadgeExplainer ? 'rotate-90' : ''}`} />
-          </button>
-          
-          <AnimatePresence>
-            {showBadgeExplainer && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="px-4 pb-4 overflow-hidden"
-              >
-                <div className="space-y-3 pt-2 border-t border-border/50 mt-2">
-                  {BADGE_TIERS.map(tier => (
-                    <div key={tier.name} className="flex gap-3 items-start bg-card p-3 rounded-xl border border-border/50">
-                      <div className={`mt-0.5 p-1.5 rounded-md bg-background border border-border ${tier.color}`}>
-                        <tier.icon className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <h5 className={`font-semibold text-sm ${tier.color}`}>{tier.name}</h5>
-                          <span className="text-[10px] bg-background border border-border px-1.5 py-0.5 rounded-full text-muted font-medium font-mono">
-                            {tier.rankInfo}
-                          </span>
-                        </div>
-                        <p className="text-xs text-muted leading-tight">{tier.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                  <div className="mt-3 p-3 bg-blue-500/5 border border-blue-500/20 rounded-xl">
-                    <p className="text-xs text-blue-400 font-medium">Verify your LinkedIn to unlock the blue <CheckCircle2 className="w-3 h-3 inline pb-0.5" /> checkmark and build maximum trust.</p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-      </div>
+      </LockedFeature>
     </div>
   );
 }
+
+
