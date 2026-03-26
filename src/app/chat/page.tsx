@@ -6,7 +6,7 @@ import LockedFeature from "@/components/ui/LockedFeature";
 
 export default function ChatPage() {
   return (
-    <div className="flex-1 overflow-hidden flex bg-background p-4 sm:p-6 lg:p-8">
+    <div className="flex-1 overflow-hidden flex bg-background p-4 sm:p-6 lg:p-8 h-screen">
       <LockedFeature
         featureName="Direct Messaging"
         description={[

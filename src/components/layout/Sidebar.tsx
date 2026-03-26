@@ -7,7 +7,7 @@ import { LayoutDashboard, CloudSync, Settings, User, KanbanSquare, Users, Globe,
 const NAV_ITEMS = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Job Tracker", href: "/tracker", icon: KanbanSquare },
-  { name: "Job Search Engine", href: "#", icon: Search, isLocked: true },
+  { name: "Job Search Engine", href: "/jobs", icon: Search, isLocked: true },
   { name: "Community Hub", href: "/community", icon: Users, isLocked: true },
   { name: "Network", href: "/network", icon: Globe, isLocked: true },
   { name: "Messages", href: "/chat", icon: MessageSquare, isLocked: true },

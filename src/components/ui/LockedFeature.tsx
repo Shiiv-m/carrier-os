@@ -19,9 +19,9 @@ export default function LockedFeature({
   if (!isLocked) return <>{children}</>;
 
   return (
-    <div className="relative group/locked overflow-hidden rounded-2xl w-full h-full min-h-[400px]">
+    <div className="relative group/locked overflow-hidden rounded-2xl w-full h-full min-h-[400px] max-h-screen">
       {/* Visual content with reduced opacity and disabled interaction */}
-      <div className="opacity-20 grayscale-[0.8] pointer-events-none transition-all duration-700 filter blur-[2px] group-hover/locked:blur-[4px] h-full">
+      <div className="opacity-20 grayscale-[0.8] pointer-events-none transition-all duration-700 filter blur-[2px] group-hover/locked:blur-[4px] h-full overflow-hidden">
         {children}
       </div>
 

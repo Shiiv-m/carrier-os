@@ -116,7 +116,7 @@ export default function CommunityPage() {
   const myBadgeStyle = getRankBadgeAndStyle(myRank - 1, myTotalUsers);
 
   return (
-    <div className="flex-1 relative overflow-x-hidden overflow-y-auto bg-background p-6 lg:p-10">
+    <div className="flex-1 relative overflow-hidden bg-background p-6 lg:p-10 h-screen">
       <BackgroundAnimation variant="community" />
       
       <LockedFeature 

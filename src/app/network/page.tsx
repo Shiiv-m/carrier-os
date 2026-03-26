@@ -20,7 +20,7 @@ import LockedFeature from "@/components/ui/LockedFeature";
 
 export default function NetworkPage() {
   return (
-    <div className="flex-1 relative overflow-x-hidden overflow-y-auto bg-background p-4 sm:p-6 lg:p-10 z-0">
+    <div className="flex-1 relative overflow-hidden bg-background p-4 sm:p-6 lg:p-10 z-0 h-screen">
       <BackgroundAnimation variant="network" />
 
       <LockedFeature
