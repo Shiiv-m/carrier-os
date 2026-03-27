@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Plus, FileText, Trash2, Copy } from "lucide-react";
+import { Plus, FileText, Trash2, Copy, Sparkles, Wand2, Zap } from "lucide-react";
 import { useResumes } from "@/hooks/useResumes";
 import { formatDistanceToNow } from "date-fns";
 import { createEmptyResume } from "@/lib/defaultResume";
@@ -40,11 +40,72 @@ export default function Dashboard() {
           </h1>
           <p className="text-muted mt-2">Manage and tailor your ATS-friendly resumes.</p>
         </div>
-        <div className="bg-card border border-border px-4 py-2 rounded-lg text-sm text-muted flex items-center gap-2">
+        <div className="bg-card border border-border px-4 py-2 rounded-lg text-sm text-muted flex items-center gap-2 shadow-sm">
            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-           Last sync: <span className="text-foreground font-medium">Never</span>
+           Last sync: <span className="text-foreground font-medium">Recently</span>
         </div>
       </header>
+
+      {/* AI Power-ups Section */}
+      <section className="mb-12 relative z-10">
+        <div className="flex items-center gap-2 mb-6">
+          <Sparkles className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-bold text-foreground">AI Power-ups</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div
+            whileHover={{ y: -5 }}
+            className="group relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-purple-500/10 border border-primary/20 rounded-2xl p-8 cursor-pointer transition-all hover:shadow-2xl hover:shadow-primary/5 shadow-lg"
+          >
+            <div className="relative z-10">
+              <div className="bg-primary/20 w-12 h-12 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Wand2 className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-2">AI Resume Architect</h3>
+              <p className="text-muted mb-6 max-w-sm">
+                Paste your raw experience, LinkedIn bio, or messy notes. Our AI will architect a perfect, ATS-optimized resume in seconds.
+              </p>
+              <Link
+                href="/ai-resume"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+              >
+                Launch Architect <Zap className="w-4 h-4 fill-current" />
+              </Link>
+            </div>
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -5 }}
+            className="group relative overflow-hidden bg-gradient-to-br from-purple-500/10 via-background to-primary/10 border border-purple-500/20 rounded-2xl p-8 cursor-pointer transition-all hover:shadow-2xl hover:shadow-purple-500/5 shadow-lg"
+          >
+            <div className="relative z-10">
+              <div className="bg-purple-500/20 w-12 h-12 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Sparkles className="w-6 h-6 text-purple-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-2">AI Cover Letter Pro</h3>
+              <p className="text-muted mb-6 max-w-sm">
+                Choose a resume, drop the job description, and let AI craft a high-conversion cover letter that gets you through the door.
+              </p>
+              <Link
+                href="/ai-cover-letter"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-purple-500/20"
+              >
+                Generate Letter <Zap className="w-4 h-4 fill-current" />
+              </Link>
+            </div>
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl group-hover:bg-purple-500/10 transition-colors"></div>
+          </motion.div>
+        </div>
+      </section>
+
+      <div className="flex items-center gap-2 mb-6 relative z-10">
+        <FileText className="w-5 h-5 text-muted" />
+        <h2 className="text-xl font-bold text-foreground">My Resumes</h2>
+      </div>
 
       <motion.div 
         initial="hidden" 

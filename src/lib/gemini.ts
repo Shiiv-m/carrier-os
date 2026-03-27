@@ -175,3 +175,116 @@ export async function refineExperienceDescription(description: string, jobDescri
     throw new Error("Failed to refine description.");
   }
 }
+
+export async function generateResumeFromRaw(rawText: string) {
+  if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not set.");
+
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  
+  const schema: ResponseSchema = {
+    type: SchemaType.OBJECT,
+    properties: {
+      title: { type: SchemaType.STRING, description: "A catchy but professional title for the resume" },
+      personalInfo: {
+        type: SchemaType.OBJECT,
+        properties: {
+          fullName: { type: SchemaType.STRING },
+          email: { type: SchemaType.STRING },
+          phone: { type: SchemaType.STRING },
+          location: { type: SchemaType.STRING },
+          website: { type: SchemaType.STRING },
+          linkedin: { type: SchemaType.STRING }
+        },
+        required: ["fullName", "email"]
+      },
+      skills: {
+        type: SchemaType.ARRAY,
+        items: {
+          type: SchemaType.OBJECT,
+          properties: {
+            name: { type: SchemaType.STRING }
+          },
+          required: ["name"]
+        }
+      },
+      experience: {
+        type: SchemaType.ARRAY,
+        items: {
+          type: SchemaType.OBJECT,
+          properties: {
+            company: { type: SchemaType.STRING },
+            position: { type: SchemaType.STRING },
+            startDate: { type: SchemaType.STRING },
+            endDate: { type: SchemaType.STRING },
+            current: { type: SchemaType.BOOLEAN },
+            description: { type: SchemaType.STRING, description: "3-5 impactful bullet points separated by newlines (\\n)" }
+          },
+          required: ["company", "position", "startDate", "endDate", "current", "description"]
+        }
+      },
+      education: {
+        type: SchemaType.ARRAY,
+        items: {
+          type: SchemaType.OBJECT,
+          properties: {
+            institution: { type: SchemaType.STRING },
+            degree: { type: SchemaType.STRING },
+            fieldOfStudy: { type: SchemaType.STRING },
+            startDate: { type: SchemaType.STRING },
+            endDate: { type: SchemaType.STRING }
+          },
+          required: ["institution", "degree", "fieldOfStudy", "startDate", "endDate"]
+        }
+      }
+    },
+    required: ["title", "personalInfo", "skills", "experience", "education"]
+  };
+
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-2.5-flash",
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: schema
+    }
+  });
+
+  const prompt = `Convert the following raw text into a structured, professional resume. 
+  Extract personal information, skills, work experience, and education. 
+  Ensure the experience descriptions are highly professional and use strong action verbs.
+  
+  Raw Text:
+  ${rawText}`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    return JSON.parse(result.response.text());
+  } catch (error) {
+    console.error("Gemini AI Error:", error);
+    throw new Error("Failed to generate resume from raw text.");
+  }
+}
+
+export async function generateCoverLetter(resumeSummary: string, rawInput: string) {
+  if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not set.");
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  
+  const prompt = `Write a professional, compelling cover letter based on the provided resume data and the user's additional input (which might include a job description or specific goals).
+  
+  Resume Context:
+  ${resumeSummary}
+  
+  User's Raw Input:
+  ${rawInput}
+  
+  The cover letter should be formatted professionally, be approximately 250-400 words, and emphasize fit for the role mentioned in the raw input.
+  Return ONLY the raw cover letter text. No markdown formatting, no explanations. Just the text.`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    return result.response.text().trim();
+  } catch (error) {
+    console.error("Gemini AI Error:", error);
+    throw new Error("Failed to generate cover letter.");
+  }
+}
