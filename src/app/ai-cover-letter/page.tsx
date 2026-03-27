@@ -17,6 +17,16 @@ export default function AICoverLetterPage() {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Pre-select the latest resume
+  useState(() => {
+    if (isLoaded && resumes.length > 0 && !selectedResumeId) {
+       const latest = [...resumes].sort((a, b) => 
+         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+       )[0];
+       setSelectedResumeId(latest.id);
+    }
+  });
+
   const handleGenerate = async () => {
     if (!selectedResumeId || !rawInput.trim()) return;
 

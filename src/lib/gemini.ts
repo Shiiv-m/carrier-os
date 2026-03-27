@@ -248,9 +248,15 @@ export async function generateResumeFromRaw(rawText: string) {
     }
   });
 
-  const prompt = `Convert the following raw text into a structured, professional resume. 
-  Extract personal information, skills, work experience, and education. 
-  Ensure the experience descriptions are highly professional and use strong action verbs.
+  const prompt = `You are a world-class resume architect. Convert the following raw, messy, or conversational text into a structured, highly professional, ATS-optimized resume. 
+  
+  CRITICAL INSTRUCTIONS:
+  1. Extract ALL personal information, skills, work experience, and education details present.
+  2. For experiences, rewrite every detail into 3-5 high-impact, metric-driven bullet points using strong action verbs (e.g., "Spearheaded", "Architected", "Optimized").
+  3. If dates are vague (e.g., "last year"), estimate a reasonable professional format or use years like "2023 - 2024".
+  4. The summary and title should be compelling and professional.
+  5. Compile everything in a way that represents a "Perfect Resume".
+  6. Return ONLY the valid JSON matching the provided schema.
   
   Raw Text:
   ${rawText}`;

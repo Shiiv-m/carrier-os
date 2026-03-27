@@ -119,16 +119,53 @@ export default function Dashboard() {
         }}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10"
       >
-        {/* Create New Card */}
+        {/* AI Resume Architect Card */}
+        <motion.div
+           variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}
+           className="relative"
+        >
+          <Link
+            href="/ai-resume"
+            className="flex flex-col items-center justify-center h-64 bg-gradient-to-br from-primary/20 via-background to-purple-500/10 border-2 border-primary/30 rounded-xl hover:border-primary hover:bg-card/50 transition-all group overflow-hidden shadow-lg"
+          >
+            <div className="bg-primary/20 w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform mb-4">
+              <Wand2 className="w-8 h-8 text-primary" />
+            </div>
+            <span className="font-bold text-foreground text-lg">AI Resume Architect</span>
+            <span className="text-xs text-muted mt-2 text-center px-4">Generate a perfect resume from raw text instantly</span>
+            <div className="absolute top-0 right-0 p-2 opacity-50"><Sparkles className="w-4 h-4 text-primary" /></div>
+          </Link>
+        </motion.div>
+
+        {/* AI Cover Letter Card */}
+        <motion.div
+           variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}
+           className="relative"
+        >
+          <Link
+            href="/ai-cover-letter"
+            className="flex flex-col items-center justify-center h-64 bg-gradient-to-br from-purple-500/20 via-background to-primary/10 border-2 border-purple-500/30 rounded-xl hover:border-purple-500 hover:bg-card/50 transition-all group overflow-hidden shadow-lg"
+          >
+            <div className="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform mb-4">
+              <Sparkles className="w-8 h-8 text-purple-500" />
+            </div>
+            <span className="font-bold text-foreground text-lg">AI Cover Letter Pro</span>
+            <span className="text-xs text-muted mt-2 text-center px-4">Tailor letters using your latest profile bio</span>
+            <div className="absolute top-0 right-0 p-2 opacity-50"><Zap className="w-4 h-4 text-purple-500" /></div>
+          </Link>
+        </motion.div>
+
+        {/* Create New Card (Manual) */}
         <motion.button
           variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}
           onClick={handleCreateNew}
-          className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-card/50 transition-all group"
+          className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-card/50 transition-all group transition-all"
         >
           <div className="bg-card w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
             <Plus className="w-8 h-8 text-primary" />
           </div>
-          <span className="mt-4 font-medium text-foreground">Create New</span>
+          <span className="mt-4 font-medium text-foreground">Manual Create</span>
+          <span className="text-xs text-muted mt-2">Build from scratch</span>
         </motion.button>
 
         {/* Existing Resumes */}
