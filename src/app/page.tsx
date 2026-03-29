@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Plus, FileText, Trash2, Copy, Sparkles, Wand2, Zap } from "lucide-react";
+import { Plus, FileText, Trash2, Copy, Sparkles, Wand2, Zap, Rocket, Check } from "lucide-react";
 import { useResumes } from "@/hooks/useResumes";
 import { formatDistanceToNow } from "date-fns";
 import { createEmptyResume } from "@/lib/defaultResume";
@@ -99,6 +99,36 @@ export default function Dashboard() {
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl group-hover:bg-purple-500/10 transition-colors"></div>
           </motion.div>
+
+          <motion.div
+            whileHover={{ y: -5 }}
+            className="group relative overflow-hidden bg-gradient-to-br from-emerald-500/10 via-background to-teal-500/10 border border-emerald-500/20 rounded-2xl p-8 cursor-pointer transition-all hover:shadow-2xl hover:shadow-emerald-500/5 shadow-lg lg:col-span-2"
+          >
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="flex-1">
+                <div className="bg-emerald-500/20 w-12 h-12 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Zap className="w-6 h-6 text-emerald-500 fill-emerald-500" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-2">JD to Resume Maker</h3>
+                <p className="text-muted mb-6 max-w-xl">
+                  Connect your existing experience to a specific opportunity. Our AI will rewrite your bullets and suggest critical missing skills to match any job description perfectly.
+                </p>
+                <Link
+                  href="/jd-resume"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 text-emerald-950 font-black rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-emerald-500/20 uppercase tracking-widest text-sm"
+                >
+                  Tailor My Resume <Rocket className="w-4 h-4 fill-current" />
+                </Link>
+              </div>
+              <div className="hidden md:flex flex-col gap-2 p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-xl backdrop-blur-sm">
+                 <div className="flex items-center gap-2 text-[10px] font-black uppercase text-emerald-500"><Check className="w-3 h-3" /> Keyword Optimization</div>
+                 <div className="flex items-center gap-2 text-[10px] font-black uppercase text-emerald-500"><Check className="w-3 h-3" /> Bullet Point Refinement</div>
+                 <div className="flex items-center gap-2 text-[10px] font-black uppercase text-emerald-500"><Check className="w-3 h-3" /> Skill Gap Discovery</div>
+              </div>
+            </div>
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl group-hover:bg-emerald-500/10 transition-colors"></div>
+          </motion.div>
         </div>
       </section>
 
@@ -152,6 +182,24 @@ export default function Dashboard() {
             <span className="font-bold text-foreground text-lg">AI Cover Letter Pro</span>
             <span className="text-xs text-muted mt-2 text-center px-4">Tailor letters using your latest profile bio</span>
             <div className="absolute top-0 right-0 p-2 opacity-50"><Zap className="w-4 h-4 text-purple-500" /></div>
+          </Link>
+        </motion.div>
+
+        {/* JD to Resume Card */}
+        <motion.div
+           variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}
+           className="relative"
+        >
+          <Link
+            href="/jd-resume"
+            className="flex flex-col items-center justify-center h-64 bg-gradient-to-br from-emerald-500/20 via-background to-teal-500/10 border-2 border-emerald-500/30 rounded-xl hover:border-emerald-500 hover:bg-card/50 transition-all group overflow-hidden shadow-lg"
+          >
+            <div className="bg-emerald-500/20 w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform mb-4">
+              <Zap className="w-8 h-8 text-emerald-500 fill-emerald-500" />
+            </div>
+            <span className="font-bold text-foreground text-lg">JD to Resume Maker</span>
+            <span className="text-xs text-muted mt-2 text-center px-4">Tailor your existing resume to any specific job</span>
+            <div className="absolute top-0 right-0 p-2 opacity-50"><Sparkles className="w-4 h-4 text-emerald-500" /></div>
           </Link>
         </motion.div>
 
